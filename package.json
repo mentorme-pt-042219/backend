@@ -1,0 +1,19 @@
+{
+  "name": "labs1-mentorme-pt-042219-bakcend-oliver-abreu",
+  "version": "1.0.0",
+  "description": "CRUD application for MentorMe buildweek project",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/mentorme-pt-042219/backend.git"
+  },
+  "author": "Oliver Abreu",
+  "license": "BSD-3-Clause",
+  "bugs": {
+    "url": "https://github.com/mentorme-pt-042219/backend/issues"
+  },
+  "homepage": "https://github.com/mentorme-pt-042219/backend#readme"
+}
