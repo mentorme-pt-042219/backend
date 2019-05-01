@@ -1,17 +1,22 @@
-const express = require('express'); 
-const helmet = require('helmet'); 
+const express = require('express');
 const cors = require('cors');
+const helmet = require('helmet');
 
-const server = express(); // USE EXPRESS 
+const configureRoutes = require('../config/routes.js');
 
-server.use(helmet()); // USE HELMET
-server.use(express.json(), cors()); // USE MIDDLEWARE
+const server = express();
 
-module.exports = server;
+server.use(helmet());
+server.use(cors());
+server.use(express.json());
 
-// ENDPOINT TEST
-server.get('/', async (req, res) => {
+// TEST ROUTE
+server.get('/', (req, res) => {
     res
         .status(200)
         .json({ API: 'UP AND RUNNING' });
 });
+
+configureRoutes(server);
+
+module.exports = server;
