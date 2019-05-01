@@ -1,6 +1,19 @@
 const express = require('express');
 const cors = require('cors');
 const helmet = require('helmet');
+const knex = require('knex'); // NEW
+
+
+// knex(knexConfig) = {
+//     client: 'sqlite3',
+//     useNullAsDefault: true,
+//     connection: {
+//         filename: './data/mentor.db3'
+//     }
+// }
+
+// const context = knex(knexConfig);
+
 
 const configureRoutes = require('../config/routes.js');
 
