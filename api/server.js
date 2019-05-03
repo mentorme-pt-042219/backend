@@ -36,7 +36,8 @@ server.get('/api/test', authenticate, (req, res) => {
                 .catch(err => 
                     console.log(err)
                 )
-});
+    }
+);
 
 // RETRIEVE ALL USERS   
 server.get('/api/users', (req, res, next) => {
@@ -108,88 +109,27 @@ server.post('/api/users', (req, res, next) => {
     }
 });
 
-
-
-
-
-
-
-// list all users
-server.get('/api/users', async (req, res) => {
-    // get the users from the database
-    try {
-        const users = await db('users'); // all the records from the table
-        res.status(200).json(users);
-    } catch (error) {
-        res.status(500).json(error);
-    }
-});
-  
-// list a user by id
-server.get('/api/users/:id', async (req, res) => {
-// get the users from the database
-try {
-    const user = await db('users')
-    .where({ id: req.params.id })
-    .first();
-    res.status(200).json(user);
-} catch (error) {
-    res.status(500).json(error);
-}
-});
-  
-const errors = {
-'19': 'Another record with that value exists',
-};
-  
-// create users
-server.post('/api/users', async (req, res) => {
-try {
-    const [id] = await db('users').insert(req.body);
-
-    const user = await db('users')
-    .where({ id })
-    .first();
-
-    res.status(201).json(user);
-} catch (error) {
-    const message = errors[error.errno] || 'We ran into an error';
-    res.status(500).json({ message, error });
-}
+// LOGIC FOR LISTING ALL POSTS
+server.get('/api/posts', (req, res, next) => {
+    db
+        .select()
+        .from('posts')
+        .then(posts => res.status(200).json(posts))
+        .catch(next)
+    }, (req, res, next) => {
+    res.status(500).json(err);
 });
 
-// update users
-server.put('/api/users/:id', async (req, res) => {
-    try {
-        const count = await db('users')
-        .where({ id: req.params.id })
-        .update(req.body);
-
-        if (count > 0) {
-        const user = await db('users')
-            .where({ id: req.params.id })
-            .first();
-
-        res.status(200).json(user);
-        } else {
-        res.status(404).json({ message: 'Records not found' });
-        }
-    } catch (error) {}
-});
-  
-// remove users (inactivate the user)
-server.delete('/api/users/:id', async (req, res) => {
-    try {
-        const count = await db('users')
-        .where({ id: req.params.id })
-        .del();
-
-        if (count > 0) {
-        res.status(204).end();
-        } else {
-        res.status(404).json({ message: 'Records not found' });
-        }
-    } catch (error) {}
+// LOGIC FOR CREATING A NEW POST
+server.post('/api/posts', (req, res, next) => {
+    const { title, question, users_id } = req.body;
+    db
+        .insert({ title, question, users_id })
+        .into('posts')
+        .then(id => res.status(201).json({ id }))
+        .catch(next)
+    }, (req, res, next) => {
+    res.status(500).json(err);
 });
 
 // configureRoutes(server);
