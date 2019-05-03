@@ -2,6 +2,7 @@ const express = require('express');
 const cors = require('cors');
 const helmet = require('helmet');
 const knex = require('knex');
+const bcrypt = require('bcrypt'); // NEW <<
 
 // DEFINE DATABASE CONFIGURATION
 const dbConfig = require("../knexfile")
@@ -10,7 +11,7 @@ const db = knex(dbConfig.development);
 
 
 const { authenticate, generateToken } = require('../auth/authenticate.js');
-
+const { login, register } = require('../config/routes'); // NEW <<
 
 const server = express();
 
@@ -83,10 +84,10 @@ server.get('/api/users/:id', (req, res, next) => {
 
 // CREATE A USER
 server.post('/api/users', (req, res, next) => {
-    const { username, industry, phoneNumber } = req.body;
-    if (!username) {
+    const { username, industry, password, phoneNumber } = req.body;
+    if (!password || !username ) {
         res
-            .json({ message: "Username cannot be blank "})
+            .json({ message: "Username and/or password cannot be blank"})
         } 
     else if 
         (!industry) {
@@ -99,15 +100,21 @@ server.post('/api/users', (req, res, next) => {
                 .json({ message: "Phone number cannot be blank "})
             } 
     else {
-        db.insert({ username, industry, phoneNumber })
-        .into('users')
-        .then(id => res.status(201).json({ id }))
-        .catch(next);
+        db
+            .insert({ username, industry, phoneNumber })
+            .into('users')
+            .then(id => res
+                .status(201)
+                .json({ message: `${username} has been successfully registerd` }))
+            .catch(next);
     } 
     (req, res, next) => {
     res.status(500).json({ err });
     }
 });
+
+// LOGIC FOR DELETING A USER
+
 
 // LOGIC FOR LISTING ALL POSTS
 server.get('/api/posts', (req, res, next) => {
@@ -129,8 +136,13 @@ server.post('/api/posts', (req, res, next) => {
         .then(id => res.status(201).json({ id }))
         .catch(next)
     }, (req, res, next) => {
-    res.status(500).json(err);
+    res
+        .status(500).json(err);
 });
+
+// LOGIC FOR EDITING A POST
+
+// LOGIC FOR DELETING A POST
 
 // configureRoutes(server);
 

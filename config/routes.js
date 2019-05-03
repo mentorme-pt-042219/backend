@@ -15,22 +15,33 @@ module.exports = server => {
 
 function register(req, res) {
     // implement user registration
-    let user = req.body;
-    if (!user.password || !user.username ) {
+    const { username, password, industry, phoneNumber } = req.body;
+    if (!password || !username ) {
         res
             .json({ message: "Username and/or password cannot be blank"})
-    } else {
+    } 
+    // else if 
+    //     (!industry) {
+    //         res
+    //             .json({ message: "Industry cannot be blank "})
+    //     } 
+    // else if 
+    //     (!phoneNumber) {
+    //         res
+    //             .json({ message: "Phone number cannot be blank "})
+    //         } 
+    else {
         const hash = bcrypt.hashSync(user.password, 10);
         user.password = hash;
         Users.add(user) 
         .then(saved => {
             const token = generateToken(saved)
-            res
-            .status(201)
-            .json({
-                message: `${user.username} has been successfully registered`,
-                token
-            });
+            // res
+            //     .status(201)
+            //     .json({
+            //         message: `${username} has been successfully registered`,
+            //         token
+            //     });
         })
         .catch(error => {
             res
@@ -40,6 +51,7 @@ function register(req, res) {
                 error
             });
         });
+        next();
     }
 }
 

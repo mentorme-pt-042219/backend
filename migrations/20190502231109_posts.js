@@ -2,12 +2,16 @@
 exports.up = function(knex, Promise) {
     // LOGIC TO DEFINE POSTS TABLE
     return knex.schema.createTable("posts", table => {
-        table.increments('id')
-        table.string('title', 128)
+        table
+            .increments('id')
+        table
+            .string('title', 128)
             .notNullable()
-        table.text('question')
+        table
+            .text('question')
             .notNullable()
-        table.integer("users_id")
+        table
+            .integer("users_id")
             .unsigned()
             .references("id")
             .inTable("users")

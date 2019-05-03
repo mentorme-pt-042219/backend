@@ -1,11 +1,14 @@
 exports.up = function(knex, Promise) {
     // LOGIC TO DEFINE OUR USERS TABLE
     return knex.schema.createTable("users", table => {  //takes in table name and callback function 
-        table.increments();
-        table.string("username", 128) 
+        table
+            .increments();
+        table
+            .string("username", 128) 
             .notNullable()
             .unique();
-        table.enum("industry", [
+        table
+            .enum("industry", [
                 "Healthcare",
                 "Information Technology",
                 "Retail",
@@ -15,8 +18,10 @@ exports.up = function(knex, Promise) {
                 "Hospitality",
             ])
             .notNullable();
-        table.integer("phoneNumber", 11);
-        table.timestamps(true, true);
+        table
+            .integer("phoneNumber", 11);
+        table
+            .timestamps(true, true);
     }) 
 };
 

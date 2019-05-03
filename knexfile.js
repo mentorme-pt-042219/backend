@@ -1,29 +1,28 @@
-// Update with your config settings.
+const localPgConnection = {
+  host: "localhost",
+  database: "mentorme",
+  user: "student",
+  password: "dummy"
+}
 
 module.exports = {
 
   development: {
     client: 'sqlite3',
     connection: {
-      filename: './data/mentorme.db3'
+      filename: "./data/mentorme.db3"
     },
     useNullAsDefault: true,
+    migrations: {
+      directory: "./migrations"
+    }
   },
 
-  // production: {
-  //   client: 'postgresql',
-  //   connection: {
-  //     database: 'my_db',
-  //     user:     'username',
-  //     password: 'password'
-  //   },
-  //   pool: {
-  //     min: 2,
-  //     max: 10
-  //   },
-  //   migrations: {
-  //     tableName: 'knex_migrations'
-  //   }
-  // }
-
+  production: {
+    client: 'pg',
+    connection: process.env.DATABASE_URL || localPgConnection,
+    migrations: {
+      directory: "./migrations"
+    }
+  }
 };
