@@ -44,12 +44,29 @@ server.get('/api/users', (req, res, next) => {
 // CREATE A USER
 server.post('/api/users', (req, res, next) => {
     const { username, industry, phoneNumber } = req.body;
-    db.insert({ username, industry, phoneNumber })
+    if (!username) {
+        res
+            .json({ message: "Username cannot be blank "})
+        } 
+    else if 
+        (!industry) {
+            res
+                .json({ message: "Industry cannot be blank "})
+        } 
+    else if 
+        (!phoneNumber) {
+            res
+                .json({ message: "Phone number cannot be blank "})
+            } 
+    else {
+        db.insert({ username, industry, phoneNumber })
         .into('users')
         .then(id => res.status(201).json({ id }))
         .catch(next);
-    }, (req, res, next) => {
+    } 
+    (req, res, next) => {
     res.status(500).json({ err });
+    }
 });
 
 // RETREIVE USER BY ID
