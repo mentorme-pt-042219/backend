@@ -8,6 +8,10 @@ const dbConfig = require("../knexfile")
 // DEFINE DATABASE
 const db = knex(dbConfig.development);
 
+
+const { authenticate, generateToken } = require('../auth/authenticate.js');
+
+
 const server = express();
 
 server.use(helmet());
@@ -22,7 +26,7 @@ server.get('/', (req, res) => {
 });
 
 // TEST API
-server.get('/api/test', (req, res) => {
+server.get('/api/test', authenticate, (req, res) => {
     db
         .select()
         .from('users')
@@ -40,6 +44,41 @@ server.get('/api/users', (req, res, next) => {
         .then(data => res.status(200).json(data))
         .catch(next)
 });
+
+
+// RETREIVE USER BY ID
+server.get('/api/users/:id', (req, res, next) => {
+    const { id } = req.params;
+        db.select()
+            .from('users')
+            .where({ id })
+            .then(usersArr => {
+                db.select()
+                    .from('posts')
+                    .where('users_id', id)
+                    .then(posts => {
+                        const users = usersArr[0];
+                res.status(200).json({
+                    id: users.id,
+                    username: users.username,
+                    industry: users.industry,
+                    phoneNumber: users.phoneNumber,
+                    posts: posts.map(posts => {
+                        return {
+                            id: posts.id,
+                            title: posts.title,
+                            question: posts.question,
+                        }
+                    })
+                })
+            })
+            .catch(next)
+        })
+        .catch(next)
+    }, (req, res, next) => {
+        res.status(500).json({ err });
+    }
+);
 
 // CREATE A USER
 server.post('/api/users', (req, res, next) => {
@@ -68,39 +107,6 @@ server.post('/api/users', (req, res, next) => {
     res.status(500).json({ err });
     }
 });
-
-// RETREIVE USER BY ID
-server.get('/api/users/:id', (req, res, next) => {
-    const { id } = req.params;
-        db.select()
-            .from('users')
-            .where({ id })
-            .then(usersArr => {
-                db.select()
-                    .from('posts')
-                    .where('users_id', id)
-                    .then(posts => {
-                        const users = usersArr[0];
-                res.status(200).json({
-                    id: users.id,
-                    username: users.username,
-                    industry: users.industry,
-                    posts: posts.map(posts => {
-                        return {
-                            id: posts.id,
-                            title: posts.title,
-                            question: posts.question,
-                        }
-                    })
-                })
-            })
-            .catch(next)
-        })
-        .catch(next)
-    }, (req, res, next) => {
-        res.status(500).json({ err });
-    }
-);
 
 
 
