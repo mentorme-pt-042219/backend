@@ -1,4 +1,3 @@
-
 exports.up = function(knex, Promise) {
     // LOGIC TO DEFINE POSTS TABLE
     return knex.schema.createTable("posts", table => {

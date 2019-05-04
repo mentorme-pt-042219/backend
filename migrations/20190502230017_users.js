@@ -19,6 +19,9 @@ exports.up = function(knex, Promise) {
             ])
             .notNullable();
         table
+            .string("password")
+            .notNullable();
+        table
             .integer("phoneNumber", 11);
         table
             .timestamps(true, true);

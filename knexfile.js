@@ -10,7 +10,7 @@ module.exports = {
   development: {
     client: 'sqlite3',
     connection: {
-      filename: "./data/mentorme.db3"
+      filename: "./database/mentorme.db3"
     },
     useNullAsDefault: true,
     migrations: {
@@ -23,6 +23,7 @@ module.exports = {
     connection: process.env.DATABASE_URL || localPgConnection,
     migrations: {
       directory: "./migrations"
-    }
+    },
   }
+  
 };
