@@ -2,7 +2,7 @@ exports.up = function(knex, Promise) {
     // LOGIC TO DEFINE OUR USERS TABLE
     return knex.schema.createTable("users", table => {  //takes in table name and callback function 
         table
-            .increments();
+            .increments('id');
         table
             .string("username", 128) 
             .notNullable()
