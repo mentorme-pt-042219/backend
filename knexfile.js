@@ -7,15 +7,18 @@ module.exports = {
     },
     useNullAsDefault: true,
     migrations: {
-      directory: "./migrations"
+      directory: "./migrations",
+      tableName: "dbMigrations"
     }
   },
 
   production: {
     client: 'pg',
-    connection: process.env.HEROKU_POSTGRESQL_BROWN,
+    connection: `${process.env.HEROKU_POSTGRESQL_BROWN}`,
+    ssl: true,
     migrations: {
-      directory: "./migrations"
+      directory: "./migrations",
+      tableName: "dbMigrations"
     },
   }
   
