@@ -14,7 +14,7 @@ module.exports = {
 
   production: {
     client: 'pg',
-    connection: `${process.env.HEROKU_POSTGRESQL_BROWN}`,
+    connection: `${process.env.HEROKU_POSTGRESQL_BROWN_URL}`,
     ssl: true,
     migrations: {
       directory: "./migrations",
