@@ -22,7 +22,7 @@ exports.up = function(knex, Promise) {
             .string("password")
             .notNullable();
         table
-            .integer("phoneNumber", 11);
+            .bigInteger("phoneNumber", 11);
         table
             .timestamps(true, true);
     }) 

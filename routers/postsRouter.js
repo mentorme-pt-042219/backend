@@ -1,11 +1,11 @@
 const express = require('express');
-const postDb = require('../database/helpers/postsDb');
+const postsDb = require('../database/helpers/postsDb');
 const router = express.Router();
 
 // Gets listing of all posts
 router.get('/', async(req, res) => {
     try {
-        const posts = await postDb.get();
+        const posts = await postsDb.get();
         res
             .json(posts);
     } catch (err) {
@@ -18,7 +18,7 @@ router.get('/', async(req, res) => {
 // Gets listing by Id with comments
 router.get('/:id', async(req, res) => {
     try {
-        const posts = await postDb.getPostComment(req.params.id);
+        const posts = await postsDb.getPostComment(req.params.id);
         if (posts) {
             res
                 .json(posts);
@@ -36,19 +36,16 @@ router.get('/:id', async(req, res) => {
 
 // Adds new family post
 router.post('/', async(req, res) => {
-    const { family_id, 
-            attraction,
-            num_of_children,
-            meetup_time,
-            meetup_date, 
-            message } = req.body
-    if (!family_id || !attraction || !num_of_children || !meetup_time || !meetup_date || !message)  {
+    const { user_id, 
+            title,
+            question } = req.body
+    if (!user_id || !title || !question )  {
         res
             .status(400)
             .json({ message: "Please provide missing information" });
     }
     try {
-        const posts = await postDb.add(req.body);
+        const posts = await postsDb.add(req.body);
         res
             .json(posts);
     } catch (err) {
@@ -61,7 +58,7 @@ router.post('/', async(req, res) => {
 // Updates a post
 router.put('/:id', async(req, res) => {
     try {
-        const updatePost = await postDb.update(req.params.id, req.body);
+        const updatePost = await postsDb.update(req.params.id, req.body);
         if (req.params.id && req.body) {
             if (updatePost) {
                 res
@@ -87,7 +84,7 @@ router.put('/:id', async(req, res) => {
 // Deleting a post
 router.delete('/:id', async(req, res) => {
     try {
-        const posts = await postDb.remove(req.params.id);
+        const posts = await postsDb.remove(req.params.id);
         if (posts) {
             res
                 .json({ message: "Your post has been successfully removed." });
