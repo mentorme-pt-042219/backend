@@ -1,10 +1,3 @@
-const localPgConnection = {
-  host: "localhost",
-  database: "mentorme",
-  user: "student",
-  password: "dummy"
-}
-
 module.exports = {
 
   development: {
@@ -20,7 +13,7 @@ module.exports = {
 
   production: {
     client: 'pg',
-    connection: process.env.HEROKU_POSTGRESQL_BROWN_URL || localPgConnection,
+    connection: process.env.HEROKU_POSTGRESQL_BROWN,
     migrations: {
       directory: "./migrations"
     },
