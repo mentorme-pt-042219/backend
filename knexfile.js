@@ -1,7 +1,7 @@
 module.exports = {
 
   development: {
-    client: 'sqlite3',
+    client: "sqlite3",
     connection: {
       filename: "./database/mentorme.db3"
     },
@@ -13,8 +13,8 @@ module.exports = {
   },
 
   production: {
-    client: 'pg',
-    connection: `${process.env.HEROKU_POSTGRESQL_BROWN_URL}`,
+    client: "pg",
+    connection: `${process.env.DATABASE_URL}`,
     ssl: true,
     migrations: {
       directory: "./migrations",
