@@ -10,7 +10,7 @@ module.exports = (req, res, next) => {
             if (err) {
                 res
                     .status(401)
-                    .json({ message: "No entry!" });
+                    .json({ message: "Error: this request requires user authentication" });
             } else {
                 req.decodedJwt = decodedToken;
                 next();
@@ -18,7 +18,7 @@ module.exports = (req, res, next) => {
         });
     } else {
         res
-            .status(401)
-            .json({ message: "No entry!" });
+        .status(401)
+        .json({ message: "Error: this request requires user authentication" });
     }
 };
