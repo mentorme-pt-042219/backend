@@ -27,7 +27,7 @@ router.post("/register", async (req, res) => {
             const hash = bcrypt.hashSync(user.password, 10);
             user.password = hash;
             try {
-                const saved = await db('users').insert(user);
+                const saved = await db("users").insert(user);
                     // return res.json({ saved })
                 if (saved) {
                     const token = tokenService.generateToken(saved);

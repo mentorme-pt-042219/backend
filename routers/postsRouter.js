@@ -2,7 +2,7 @@ const express = require('express');
 const postsDb = require('../database/helpers/postsDb');
 const router = express.Router();
 
-// Gets listing of all posts
+// GET ALL POSTS
 router.get('/', async(req, res) => {
     try {
         const posts = await postsDb.get();

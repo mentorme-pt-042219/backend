@@ -87,7 +87,7 @@ router.delete('/:id', async (req, res) => {
         const user = await usersDb.remove(req.params.id);
         if (user) {
             res
-                .json({ message: `Sorry to see you go ${user.username} user!` });
+                .json({ message: `The account for ${user.username} has been deleted` });
         } 
         else {
             res
