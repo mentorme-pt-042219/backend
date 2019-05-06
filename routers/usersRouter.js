@@ -2,7 +2,6 @@ const express = require('express');
 const router = express.Router();
 
 const usersDb = require('../database/helpers/usersDb');
-const postDb = require('../database/helpers/postsDb');
 
 const restricted = require('../auth/restricted');
 const auth = require('../auth/verifyAuth');
@@ -12,11 +11,11 @@ const auth = require('../auth/verifyAuth');
 router.get('/api/users', (req, res) => {
     db('users')
         .then(data => res.status(200).json(data))
-        .catch(next)
+        .catch(next);
 });
 
 router.get('/', async(req, res) => {
-    console.log(req.decodedJwt);
+
     try {
         const users = await usersDb.get();
         if(users) {
@@ -87,7 +86,7 @@ router.delete('/:id', async (req, res) => {
         const user = await usersDb.remove(req.params.id);
         if (user) {
             res
-                .json({ message: `The account for ${user.username} has been deleted` });
+                .json({ message: `The account belonging to ${user.username} has been deleted` });
         } 
         else {
             res

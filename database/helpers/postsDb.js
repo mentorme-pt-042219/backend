@@ -1,10 +1,9 @@
-const db = require('../dbConfig.js');
+const db = require("../dbConfig.js");
 
 module.exports = {
     get,
     getPost,
-    getPostComment,
-    getPostByFamily,
+    getPostByUser,
     add,
     update,
     remove,
@@ -12,59 +11,53 @@ module.exports = {
 };
 
 function get() {
-    return db('posts');
+    return db("posts");
 }
 
 function getPost(id) {
-    return db('posts')
+    return db("posts")
         .select(
-            'id',
-            'users_id'
+            "id",
+            "users_id"
         )
-        .where('id', id);
+        .where("id", id);
 }
 
 function getPostComment(id) {
-    return db('comments')
-        .select('comment')
-        .where('post_id', id);
+    return db("comments")
+        .select("comment")
+        .where("posts_id", id);
 }
 
-function getPostByFamily(familyId) {
-    return db('posts')
+function getPostByUser(userId) {
+    return db("posts")
         .select(
-            'id', 
-            'attraction',
-            'num_of_children',
-            'meetup_time',
-            'meetup_date',
-            'message',
+            "id",
+            ""
         )
-        .where('family_id', familyId);
+        .where("users_id", userId);
 }
 
 function add(post) {
-    return db('posts')
+    return db("posts")
         .insert(post)
-        .then(ids => {
-            return getById(ids[0]);
-        });
+        .returning("id")
 }
 
 function update(id, changes) {
-    return db('posts')
+    return db("posts")
         .where({ id })
         .update(changes);
 }
 
 function remove(id) {
-    return db('posts')
-        .where('id', id)
+    return db("posts")
+        .where("id", id)
         .del();
 }
 
 function removeByUser(user_id) {
-    return db('posts')
-        .where('user_id', user_id)
+    return db("posts")
+        .where("user_id", user_id)
         .del();
 }

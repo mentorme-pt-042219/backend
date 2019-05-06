@@ -1,5 +1,7 @@
 const express = require('express');
+
 const postsDb = require('../database/helpers/postsDb');
+
 const router = express.Router();
 
 // GET ALL POSTS
@@ -15,7 +17,7 @@ router.get('/', async(req, res) => {
     }
 });
 
-// Gets listing by Id with comments
+// GET POSTS BY ID
 router.get('/:id', async(req, res) => {
     try {
         const posts = await postsDb.getPostComment(req.params.id);
@@ -25,7 +27,7 @@ router.get('/:id', async(req, res) => {
         } else {
             res
                 .status(404)
-                .json({ message: "The post with that Id does not exist." });
+                .json({ message: "The post with that ID does not exist." });
         }
     } catch (err) {
         res
@@ -34,12 +36,12 @@ router.get('/:id', async(req, res) => {
     }
 });
 
-// Adds new family post
+// CREATE NEW POST
 router.post('/', async(req, res) => {
-    const { user_id, 
-            title,
-            question } = req.body
-    if (!user_id || !title || !question )  {
+    const { users_id, 
+            post_title,
+            post_body } = req.body
+    if (!users_id || !post_title || !post_body )  {
         res
             .status(400)
             .json({ message: "Please provide missing information" });
@@ -48,10 +50,10 @@ router.post('/', async(req, res) => {
         const posts = await postsDb.add(req.body);
         res
             .json(posts);
-    } catch (err) {
+    } catch ({ message }) {
         res
             .status(500)
-            .json({ err: "The post could not be added at this time." });
+            .json({ message });
     }
 });
 
@@ -67,12 +69,12 @@ router.put('/:id', async(req, res) => {
             } else {
                 res
                     .status(404)
-                    .json({ message: "The post with the specified Id does not exist." });
+                    .json({ message: "The post with the specified ID does not exist." });
             }
         } else {
             res
                 .status(400)
-                .json({ message: "Please provide user id and content for the post." });
+                .json({ message: "Please provide user ID and content for the post." });
         }
     } catch (err) {
         res
